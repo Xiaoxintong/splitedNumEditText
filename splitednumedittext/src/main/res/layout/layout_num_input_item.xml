@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="0dp"
+    android:layout_marginTop="0dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <EditText
+        android:id="@+id/et_input"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dimen_get_identifying_code"
+        android:layout_marginBottom="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_weight="1"
+        android:background="@null"
+        android:inputType="number"
+        android:maxLength="11"
+        android:textSize="16sp"
+        tools:hint="请输入手机号" />
+
+    <ImageView
+        android:id="@+id/iv_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:visibility="gone"
+        android:src="@drawable/icon_delete" />
+</LinearLayout>

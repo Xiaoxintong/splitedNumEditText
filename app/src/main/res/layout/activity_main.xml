@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+
+    <com.jerrymouse.tools.snet.SplitedNumEditText
+        android:id="@+id/editText1"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="50dp"
+        android:background="@null"
+        android:textCursorDrawable="@null"
+        android:textSize="34sp"
+        app:item_text_color="#333333"
+        app:item_text_size="34sp"
+        app:item_type="common"
+        app:item_hint="普通数字输入框"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <com.jerrymouse.tools.snet.SplitedNumEditText
+        android:id="@+id/editText2"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:item_text_color="#333333"
+        app:item_text_size="34sp"
+        app:item_type="bank_card_no"
+        app:item_hint="银行卡号输入框"
+        app:item_max_len="30"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText1" />
+
+    <com.jerrymouse.tools.snet.SplitedNumEditText
+        android:id="@+id/editText3"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:item_text_color="#333333"
+        app:item_text_size="34sp"
+        app:item_type="identify_card_no"
+        app:item_hint="身份证号输入框"
+        app:item_max_len="21"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText2" />
+
+    <com.jerrymouse.tools.snet.SplitedNumEditText
+        android:id="@+id/editText4"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:item_text_color="#333333"
+        app:item_text_size="34sp"
+        app:item_type="phone"
+        app:item_hint="手机号输入框"
+        app:item_max_len="13"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText3" />
+
+</android.support.constraint.ConstraintLayout>
