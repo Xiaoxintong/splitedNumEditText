@@ -107,6 +107,9 @@ public class SplitedNumEditText extends LinearLayout {
                 inputEt.requestFocus();
                 InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.showSoftInput(inputEt, InputMethodManager.SHOW_FORCED);
+                if (textChangeListener != null) {
+                    textChangeListener.onChanged(inputEt.getText().toString());
+                }
             }
         });
 
