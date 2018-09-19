@@ -1,4 +1,4 @@
-package com.jerrymouse.tools.snet.demo;
+package com.cxyzy.tools.snet.demo;
 
 
 import android.support.v7.app.AppCompatActivity;

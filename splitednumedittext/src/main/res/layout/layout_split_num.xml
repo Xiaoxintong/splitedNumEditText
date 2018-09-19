@@ -12,15 +12,15 @@
     <EditText
         android:id="@+id/et_input"
         android:layout_width="0dp"
-        android:layout_height="@dimen/dimen_get_identifying_code"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="0dp"
         android:layout_marginTop="0dp"
         android:layout_weight="1"
-        android:background="@null"
         android:inputType="number"
         android:maxLength="11"
-        android:textSize="16sp"
-        tools:hint="请输入手机号" />
+        android:textSize="20sp"
+        tools:hint="请输入手机号"
+        tools:ignore="LabelFor" />
 
     <ImageView
         android:id="@+id/iv_delete"
@@ -28,5 +28,6 @@
         android:layout_height="wrap_content"
         android:padding="5dp"
         android:visibility="gone"
-        android:src="@drawable/icon_delete" />
+        android:src="@drawable/icon_delete"
+        tools:ignore="ContentDescription" />
 </LinearLayout>

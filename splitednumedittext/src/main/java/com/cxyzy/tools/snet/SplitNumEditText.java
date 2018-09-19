@@ -1,4 +1,4 @@
-package com.jerrymouse.tools.snet;
+package com.cxyzy.tools.snet;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -13,7 +13,6 @@ import android.text.method.DigitsKeyListener;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,76 +22,77 @@ import android.widget.LinearLayout;
  * @author 程序园中猿
  */
 
-public class SplitedNumEditText extends LinearLayout {
-    private EditText inputEt;
-    private ImageView deleteIv;
+public class SplitNumEditText extends LinearLayout {
+    private final EditText editText;
+    private final ImageView deleteIv;
     /**
      * 普通数字(含小数点)，不需要分隔
      */
-    public static final int TYPE_COMMON = 0;
-    public static final int TYPE_BANK_CARD = 1;
-    public static final int TYPE_ID_CARD = 2;
-    public static final int TYPE_PHONE = 3;
+    private final int TYPE_COMMON = 0;
+    private final int TYPE_BANK_CARD = 1;
+    private final int TYPE_ID_CARD = 2;
+    private final int TYPE_PHONE = 3;
+    @SuppressWarnings("FieldCanBeLocal")
+    private final int DEFAULT_MAX_LEN = 50;
     private int start, count, before;
     private int contentType;
-    private int maxLength = 50;
     private String digits;
     private TextChangeListener textChangeListener;
 
-    public SplitedNumEditText(Context context) {
+    public SplitNumEditText(Context context) {
         this(context, null, 0);
     }
 
-    public SplitedNumEditText(Context context, @Nullable AttributeSet attrs) {
+    public SplitNumEditText(Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public SplitedNumEditText(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public SplitNumEditText(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        LayoutInflater.from(context).inflate(R.layout.layout_num_input_item, this);
-        inputEt = (EditText) findViewById(R.id.et_input);
-        deleteIv = (ImageView) findViewById(R.id.iv_delete);
+        LayoutInflater.from(context).inflate(R.layout.layout_split_num, this);
+        editText = findViewById(R.id.et_input);
+        deleteIv = findViewById(R.id.iv_delete);
         init(context, attrs);
     }
 
-    public void setInputType(int type) {
+    private void setInputType(int type) {
         if (contentType == TYPE_COMMON || contentType == TYPE_PHONE || contentType == TYPE_BANK_CARD) {
             type = InputType.TYPE_CLASS_NUMBER;
         } else if (contentType == TYPE_ID_CARD) {
             type = InputType.TYPE_CLASS_TEXT;
         }
-        inputEt.setInputType(type);
+        editText.setInputType(type);
         /* 非常重要:setKeyListener要在setInputType后面调用，否则无效。*/
         if (!TextUtils.isEmpty(digits)) {
-            inputEt.setKeyListener(DigitsKeyListener.getInstance(digits));
+            editText.setKeyListener(DigitsKeyListener.getInstance(digits));
         }
     }
 
-    protected void init(final Context context, @Nullable AttributeSet attrs) {
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.SplitedNumEditText);
-        String hint = typedArray.getString(R.styleable.SplitedNumEditText_item_hint);
-        ColorStateList textColor = typedArray.getColorStateList(R.styleable.SplitedNumEditText_item_text_color);
-        float textSize = typedArray.getDimensionPixelOffset(R.styleable.SplitedNumEditText_item_text_size, 36);
-        contentType = typedArray.getInt(R.styleable.SplitedNumEditText_item_type, 0);
-        int maxCount = typedArray.getInteger(R.styleable.SplitedNumEditText_item_max_len, 30);
+    private void init(final Context context, @Nullable AttributeSet attrs) {
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.SplitNumEditText);
+        String hint = typedArray.getString(R.styleable.SplitNumEditText_item_hint);
+        ColorStateList textColor = typedArray.getColorStateList(R.styleable.SplitNumEditText_item_text_color);
+        float textSize = typedArray.getDimensionPixelOffset(R.styleable.SplitNumEditText_item_text_size, 36);
+        contentType = typedArray.getInt(R.styleable.SplitNumEditText_item_type, 0);
+        int maxCount = typedArray.getInteger(R.styleable.SplitNumEditText_item_max_len, 30);
         typedArray.recycle();
         initType();
-        inputEt.setHint(hint);
-        inputEt.setFilters(new InputFilter[]{new InputFilter.LengthFilter(maxCount)});
-        inputEt.setTextSize(px2dip(context, textSize));
+        editText.setHint(hint);
+        editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(maxCount)});
+        editText.setTextSize(px2dip(context, textSize));
         if (textColor != null) {
-            inputEt.setTextColor(textColor);
+            editText.setTextColor(textColor);
         }
 
-        inputEt.setSingleLine();
-        inputEt.addTextChangedListener(watcher);
-        inputEt.setOnFocusChangeListener(new OnFocusChangeListener() {
+        editText.setSingleLine();
+        editText.addTextChangedListener(watcher);
+        editText.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
                     deleteIv.setVisibility(GONE);
                 } else {
-                    if (inputEt.getText().length() > 0) {
+                    if (editText.getText().length() > 0) {
                         deleteIv.setVisibility(VISIBLE);
                     } else {
                         deleteIv.setVisibility(GONE);
@@ -103,12 +103,9 @@ public class SplitedNumEditText extends LinearLayout {
         deleteIv.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                inputEt.setText("");
-                inputEt.requestFocus();
-                InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.showSoftInput(inputEt, InputMethodManager.SHOW_FORCED);
+                editText.setText("");
                 if (textChangeListener != null) {
-                    textChangeListener.onChanged(inputEt.getText().toString());
+                    textChangeListener.onChanged(editText.getText().toString());
                 }
             }
         });
@@ -123,16 +120,16 @@ public class SplitedNumEditText extends LinearLayout {
         }
     }
 
-    private TextWatcher watcher = new TextWatcher() {
+    private final TextWatcher watcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
         }
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            SplitedNumEditText.this.start = start;
-            SplitedNumEditText.this.before = before;
-            SplitedNumEditText.this.count = count;
+            SplitNumEditText.this.start = start;
+            SplitNumEditText.this.before = before;
+            SplitNumEditText.this.count = count;
         }
 
         @Override
@@ -164,36 +161,37 @@ public class SplitedNumEditText extends LinearLayout {
                         spaceCount += 1;
                     }
                 }
-                inputEt.removeTextChangedListener(watcher);
+                editText.removeTextChangedListener(watcher);
                 s.replace(0, s.length(), sb);
                 //如果是在末尾的话,或者加入的字符个数大于零的话（输入或者粘贴）
                 if (!isMiddle || count > 1) {
-                    inputEt.setSelection(s.length() <= maxLength ? s.length() : maxLength);
+                    editText.setSelection(s.length() <= DEFAULT_MAX_LEN ? s.length() : DEFAULT_MAX_LEN);
                 } else {
                     //如果是删除
                     if (count == 0) {
                         //如果删除时，光标停留在空格的前面，光标则要往前移一位
                         if (isSpace(start - before + 1)) {
-                            inputEt.setSelection((start - before) > 0 ? start - before : 0);
+                            editText.setSelection((start - before) > 0 ? start - before : 0);
                         } else {
-                            inputEt.setSelection((start - before + 1) > s.length() ? s.length() : (start - before + 1));
+                            editText.setSelection((start - before + 1) > s.length() ? s.length() : (start - before + 1));
                         }
                     }
                     //如果是增加
                     else {
                         if (isSpace(start - before + count)) {
-                            inputEt.setSelection((start + count - before + 1) < s.length() ? (start + count - before + 1) : s.length());
+                            editText.setSelection((start + count - before + 1) < s.length() ? (start + count - before + 1) : s.length());
                         } else {
-                            inputEt.setSelection(start + count - before);
+                            editText.setSelection(start + count - before);
                         }
                     }
                 }
-                inputEt.addTextChangedListener(watcher);
+                editText.addTextChangedListener(watcher);
             }
         }
     };
 
     private void initType() {
+        //noinspection IfCanBeSwitch
         if (contentType == TYPE_COMMON) {
             digits = ".0123456789 ";
             setInputType(InputType.TYPE_CLASS_NUMBER);
@@ -234,11 +232,11 @@ public class SplitedNumEditText extends LinearLayout {
     }
 
     public String getText() {
-        return inputEt.getText().toString().replaceAll(" ", "");
+        return editText.getText().toString().replaceAll(" ", "");
     }
 
     public void setText(String text) {
-        inputEt.setText(text);
+        editText.setText(text);
     }
 
     public void setTextChangeListener(TextChangeListener textChangeListener) {
@@ -246,11 +244,10 @@ public class SplitedNumEditText extends LinearLayout {
     }
 
 
-    public interface TextChangeListener {
+    interface TextChangeListener {
         /**
-         * 监听文本内容版画
-         *
-         * @Parameter text 监听文本
+         * 监听文本内容变化
+         * @param text 文本内容
          */
         void onChanged(String text);
     }
@@ -258,9 +255,12 @@ public class SplitedNumEditText extends LinearLayout {
     /**
      * 根据手机的分辨率从 px(像素) 的单位 转成为 dp
      */
-    public int px2dip(Context context, float pxValue) {
+    private int px2dip(Context context, float pxValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (pxValue / scale + 0.5f);
     }
 
+    public EditText getEditText() {
+        return editText;
+    }
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <declare-styleable name="SplitedNumEditText">
+    <declare-styleable name="SplitNumEditText">
         <attr name="item_hint" format="string" />
         <attr name="item_max_len" format="integer" />
         <attr name="item_type" format="enum">
