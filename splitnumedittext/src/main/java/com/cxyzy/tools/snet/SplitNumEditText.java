@@ -3,7 +3,7 @@ package com.cxyzy.tools.snet;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
-import android.support.annotation.Nullable;
+
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -16,6 +16,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
+import androidx.annotation.Nullable;
 
 /**
  * 自定义分段输入控件，支持银行卡、身份证、手机号分段输入。
