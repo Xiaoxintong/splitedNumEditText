@@ -19,6 +19,7 @@
         android:inputType="number"
         android:maxLength="11"
         android:textSize="20sp"
+        android:background="@null"
         tools:hint="请输入手机号"
         tools:ignore="LabelFor" />
 
